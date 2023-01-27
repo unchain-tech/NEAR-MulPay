@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
   networks: {
     testnet_aurora: {
       url: "https://testnet.aurora.dev",
-      accounts: [process.env.AURORA_PRIVATE_KEY!],
+      // accounts: [process.env.AURORA_PRIVATE_KEY!],
     },
   },
 };
