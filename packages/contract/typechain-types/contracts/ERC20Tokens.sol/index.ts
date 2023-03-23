@@ -8,4 +8,5 @@ export type { PolygonToken } from './PolygonToken';
 export type { ShibainuToken } from './ShibainuToken';
 export type { SolanaToken } from './SolanaToken';
 export type { TetherToken } from './TetherToken';
+export type { UNCHToken } from './UNCHToken';
 export type { UniswapToken } from './UniswapToken';

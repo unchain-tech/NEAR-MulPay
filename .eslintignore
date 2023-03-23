@@ -3,3 +3,4 @@
 **/cache
 **/coverage
 **/build
+packages/contract/typechain-types

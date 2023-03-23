@@ -54,6 +54,10 @@ declare module 'hardhat/types/runtime' {
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.TetherToken__factory>;
     getContractFactory(
+      name: 'UNCHToken',
+      signerOrOptions?: ethers.Signer | FactoryOptions,
+    ): Promise<Contracts.UNCHToken__factory>;
+    getContractFactory(
       name: 'UniswapToken',
       signerOrOptions?: ethers.Signer | FactoryOptions,
     ): Promise<Contracts.UniswapToken__factory>;
@@ -112,6 +116,11 @@ declare module 'hardhat/types/runtime' {
       address: string,
       signer?: ethers.Signer,
     ): Promise<Contracts.TetherToken>;
+    getContractAt(
+      name: 'UNCHToken',
+      address: string,
+      signer?: ethers.Signer,
+    ): Promise<Contracts.UNCHToken>;
     getContractAt(
       name: 'UniswapToken',
       address: string,

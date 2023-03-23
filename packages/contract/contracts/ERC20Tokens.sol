@@ -50,9 +50,3 @@ contract PolygonToken is ERC20 {
     _mint(contractAddress, 1000000 ether);
   }
 }
-
-contract UNCHToken is ERC20 {
-  constructor(address contractAddress) ERC20('Polygon Token', 'Matic') {
-    _mint(contractAddress, 1000000 ether);
-  }
-}

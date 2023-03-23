@@ -30,6 +30,8 @@ export type { SolanaToken } from './contracts/ERC20Tokens.sol/SolanaToken';
 export { SolanaToken__factory } from './factories/contracts/ERC20Tokens.sol/SolanaToken__factory';
 export type { TetherToken } from './contracts/ERC20Tokens.sol/TetherToken';
 export { TetherToken__factory } from './factories/contracts/ERC20Tokens.sol/TetherToken__factory';
+export type { UNCHToken } from './contracts/ERC20Tokens.sol/UNCHToken';
+export { UNCHToken__factory } from './factories/contracts/ERC20Tokens.sol/UNCHToken__factory';
 export type { UniswapToken } from './contracts/ERC20Tokens.sol/UniswapToken';
 export { UniswapToken__factory } from './factories/contracts/ERC20Tokens.sol/UniswapToken__factory';
 export type { SwapContract } from './contracts/Swap.sol/SwapContract';

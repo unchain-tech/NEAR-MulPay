@@ -9,8 +9,10 @@ coverage*
 gasReporterOutput.json
 package.json
 smartcontracts
-typechain-types
 linux
 ios
 build
 windows
+.dart_tool
+analysis_options.yaml
+macos

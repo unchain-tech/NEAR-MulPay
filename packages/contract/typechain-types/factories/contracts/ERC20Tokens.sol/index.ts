@@ -8,4 +8,5 @@ export { PolygonToken__factory } from './PolygonToken__factory';
 export { ShibainuToken__factory } from './ShibainuToken__factory';
 export { SolanaToken__factory } from './SolanaToken__factory';
 export { TetherToken__factory } from './TetherToken__factory';
+export { UNCHToken__factory } from './UNCHToken__factory';
 export { UniswapToken__factory } from './UniswapToken__factory';
