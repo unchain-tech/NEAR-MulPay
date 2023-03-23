@@ -106,12 +106,8 @@ MaticToken is deployed to: 0xE91fAD00f61076f9274e1656f263597B6ddA090D
 
 下のコマンドを実行させることでフロントエンドの動きを確認してみましょう。
 
-どのコマンドを走らせるか聞かれるので下のように`run`と打ち込んで Enter を押すと PC のエミュレータまたは実機に Mulpay が立ち上がり動作確認ができます。
-
-![](/public/1.png)
-
 [こちら](https://app.unchain.tech/learn/NEAR-MulPay/ja/3/1/)のページのように動作していれば成功です！
 
 ```
-yarn client run
+yarn client start
 ```
