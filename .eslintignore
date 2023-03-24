@@ -1,0 +1,6 @@
+**/node_modules
+**/artifacts
+**/cache
+**/coverage
+**/build
+packages/contract/typechain-types
