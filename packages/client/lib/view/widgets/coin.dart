@@ -35,7 +35,7 @@ Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: isDeskTop ? 25 : 14,
+                    fontSize: isDeskTop ? 20 : 14,
                   ),
                 ),
                 Text(
@@ -43,7 +43,7 @@ Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey,
-                    fontSize: isDeskTop ? 18 : 12,
+                    fontSize: isDeskTop ? 17 : 12,
                   ),
                 ),
               ],

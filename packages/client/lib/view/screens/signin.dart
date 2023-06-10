@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:web3_connect/web3_connect.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({Key? key}) : super(key: key);
@@ -27,14 +28,17 @@ class SignIn extends StatelessWidget {
     final displayHeight = MediaQuery.of(context).size.height;
     final displayWidth = MediaQuery.of(context).size.width;
     var provider = Provider.of<BottomNavigationBarProvider>(context);
+    final isDeskTop = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
+
     return Scaffold(
       body: SafeArea(
         child: SizedBox.expand(
           child: Container(
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: const AssetImage("assets/multiple-coins.jpg"),
-                alignment: const Alignment(-0.4, 0.5),
+                alignment: Alignment(isDeskTop ? 0 : -0.3, 0.5),
                 fit: BoxFit.fitHeight,
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.6),
@@ -44,7 +48,6 @@ class SignIn extends StatelessWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
                   height: displayHeight * 0.1,
@@ -71,7 +74,7 @@ class SignIn extends StatelessWidget {
                   height: displayHeight * 0.03,
                 ),
                 Container(
-                  width: double.infinity,
+                  width: isDeskTop ? displayWidth * 0.4 : displayWidth,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                   margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -91,7 +94,7 @@ class SignIn extends StatelessWidget {
                 ),
                 SizedBox(
                   height: displayHeight * 0.1,
-                  width: displayWidth * 0.7,
+                  width: isDeskTop ? displayWidth * 0.4 : displayWidth * 0.7,
                   child: ElevatedButton(
                     onPressed: () async {
                       connection.enterChainId(1313161555);

@@ -33,14 +33,14 @@ class Home extends StatelessWidget {
               ),
               SizedBox(
                 height:
-                    isDeskTop ? (displayHeight * 0.05) : (displayHeight * 0.04),
+                    isDeskTop ? (displayHeight * 0.06) : (displayHeight * 0.04),
                 child: Row(
                   children: [
                     Center(
                       child: Text(
                         'Home',
                         style: isDeskTop
-                            ? const TextStyle(fontSize: 40)
+                            ? const TextStyle(fontSize: 50)
                             : (Theme.of(context).textTheme.headlineSmall),
                       ),
                     ),
