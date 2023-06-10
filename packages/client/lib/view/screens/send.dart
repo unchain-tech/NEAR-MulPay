@@ -523,7 +523,9 @@ class _SendState extends State<Send> {
                           margin: EdgeInsets.only(bottom: displayHeight * 0.02),
                           child: SizedBox(
                             height: displayHeight * 0.1,
-                            width: displayWidth * 0.7,
+                            width: isDeskTop
+                                ? (displayWidth * 0.9)
+                                : (displayWidth * 0.7),
                             child: ElevatedButton(
                               onPressed: () async {
                                 await contractModel.sendToken(

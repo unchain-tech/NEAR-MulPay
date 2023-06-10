@@ -46,13 +46,14 @@ class _WalletState extends State<Wallet> {
                     isDeskTop ? (displayHeight * 0.01) : (displayHeight * 0.04),
               ),
               SizedBox(
-                height: displayHeight * 0.05,
+                height:
+                    isDeskTop ? (displayHeight * 0.06) : (displayHeight * 0.04),
                 child: Row(
                   children: [
                     Text(
                       'Wallet',
                       style: isDeskTop
-                          ? const TextStyle(fontSize: 40)
+                          ? const TextStyle(fontSize: 50)
                           : (Theme.of(context).textTheme.headlineSmall),
                     ),
                   ],
