@@ -9,6 +9,7 @@ import 'package:mulpay_frontend/view/widgets/qr_code.dart';
 import 'package:mulpay_frontend/view/widgets/coin.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class Home extends StatelessWidget {
     final displayHeight = MediaQuery.of(context).size.height;
     final displayWidth = MediaQuery.of(context).size.width;
     var contractModel = Provider.of<ContractModel>(context, listen: true);
+    final isDeskTop = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
 
     return Scaffold(
       body: SafeArea(
@@ -26,16 +28,20 @@ class Home extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: displayHeight * 0.04,
+                height:
+                    isDeskTop ? (displayHeight * 0.01) : (displayHeight * 0.04),
               ),
               SizedBox(
-                height: displayHeight * 0.04,
+                height:
+                    isDeskTop ? (displayHeight * 0.05) : (displayHeight * 0.04),
                 child: Row(
                   children: [
                     Center(
                       child: Text(
                         'Home',
-                        style: Theme.of(context).textTheme.headline1,
+                        style: isDeskTop
+                            ? const TextStyle(fontSize: 40)
+                            : (Theme.of(context).textTheme.headlineSmall),
                       ),
                     ),
                   ],
@@ -77,10 +83,12 @@ class Home extends StatelessWidget {
                                   SizedBox(
                                     height: displayHeight * 0.027,
                                   ),
-                                  const Text(
+                                  Text(
                                     "Balance",
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 13),
+                                      color: Colors.white,
+                                      fontSize: isDeskTop ? 35 : 13,
+                                    ),
                                   ),
                                   FutureBuilder(
                                       future: contractModel.getTotalBalance(),
@@ -90,11 +98,11 @@ class Home extends StatelessWidget {
                                             "${(snapshot.data.toString())} ETH",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 14,
+                                                fontSize: isDeskTop ? 28 : 13,
                                                 fontWeight: FontWeight.bold),
                                           );
                                         } else {
-                                          return Center(
+                                          return const Center(
                                             child: CircularProgressIndicator
                                                 .adaptive(),
                                           );
@@ -104,8 +112,8 @@ class Home extends StatelessWidget {
                               ),
                               const Spacer(),
                               SizedBox(
-                                height: 30,
-                                width: 22,
+                                height: isDeskTop ? 55 : 30,
+                                width: isDeskTop ? 45 : 22,
                                 child: SvgPicture.asset(
                                   'assets/three-dots.svg',
                                   color: Colors.white,
@@ -131,7 +139,7 @@ class Home extends StatelessWidget {
                                       contractModel.account,
                                       style: TextStyle(
                                         color: Colors.grey,
-                                        fontSize: 13,
+                                        fontSize: isDeskTop ? 28 : 13,
                                         fontWeight: FontWeight.w600,
                                       ),
                                       overflow: TextOverflow.ellipsis,
@@ -161,11 +169,11 @@ class Home extends StatelessWidget {
                                             color: Colors.grey,
                                           ),
                                         ),
-                                        const Text(
+                                        Text(
                                           ' display QR code',
                                           style: TextStyle(
                                             color: Colors.grey,
-                                            fontSize: 12,
+                                            fontSize: isDeskTop ? 25 : 12,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
@@ -176,8 +184,8 @@ class Home extends StatelessWidget {
                               ),
                               const Spacer(),
                               SizedBox(
-                                height: 35,
-                                width: 35,
+                                height: isDeskTop ? 55 : 35,
+                                width: isDeskTop ? 55 : 35,
                                 child: Image.asset(
                                   'assets/unchain_logo.png',
                                 ),
@@ -203,17 +211,17 @@ class Home extends StatelessWidget {
                                 itemCount: coinsList.length,
                                 itemBuilder: (context, index) {
                                   return Coins(
-                                    displayWidth,
-                                    displayHeight,
-                                    coinsList[index].imagePath,
-                                    coinsList[index].symbol,
-                                    coinsList[index].name,
-                                    coinsList[index].balance,
-                                    (coinsList[index].ethBalance),
-                                  );
+                                      displayWidth,
+                                      displayHeight,
+                                      coinsList[index].imagePath,
+                                      coinsList[index].symbol,
+                                      coinsList[index].name,
+                                      coinsList[index].balance,
+                                      (coinsList[index].ethBalance),
+                                      isDeskTop);
                                 });
                           } else {
-                            return Center(
+                            return const Center(
                                 child: CircularProgressIndicator.adaptive());
                           }
                         },

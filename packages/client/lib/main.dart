@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         ),
         fontFamily: GoogleFonts.plusJakartaSans().fontFamily,
         textTheme: TextTheme(
-          headline1: TextStyle(
+          headlineSmall: TextStyle(
             fontFamily: GoogleFonts.baloo2().fontFamily,
             fontSize: 36,
             height: 1.0,
