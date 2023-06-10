@@ -6,6 +6,7 @@ import 'package:mulpay_frontend/model/contract_model.dart';
 import 'package:mulpay_frontend/view/screens/signin.dart';
 import 'package:mulpay_frontend/view/widgets/navbar.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
@@ -30,6 +31,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+        child: child!,
+        breakpoints: [
+          const Breakpoint(start: 0, end: 450, name: MOBILE),
+          const Breakpoint(start: 451, end: double.infinity, name: DESKTOP),
+        ],
+      ),
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
