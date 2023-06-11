@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
-    depo, value) {
+    depo, value, bool isDeskTop) {
   return Container(
     height: displayHeight * 0.08,
     width: displayWidth,
@@ -19,8 +19,8 @@ Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
         Row(
           children: [
             SizedBox(
-              height: 37,
-              width: 37,
+              height: isDeskTop ? 55 : 37,
+              width: isDeskTop ? 55 : 37,
               child: Image.asset(imagePath),
             ),
             const SizedBox(
@@ -35,21 +35,22 @@ Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: isDeskTop ? 20 : 14,
                   ),
                 ),
                 Text(
                   name,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
-                      fontSize: 12),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                    fontSize: isDeskTop ? 17 : 12,
+                  ),
                 ),
               ],
             ),
           ],
         ),
-        Expanded(
+        const Expanded(
           child: SizedBox(),
         ),
         SizedBox(
@@ -59,18 +60,19 @@ Widget Coins(double displayWidth, displayHeight, String imagePath, symbol, name,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${depo} ${symbol}',
+                '$depo $symbol',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 13,
+                  fontSize: isDeskTop ? 20 : 13,
                 ),
               ),
               Text(
-                '${value} ETH',
+                '$value ETH',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 12),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: isDeskTop ? 18 : 12,
+                ),
               ),
             ],
           ),
