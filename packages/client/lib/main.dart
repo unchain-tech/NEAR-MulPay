@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mulpay_frontend/model/contract_model.dart';
-import 'package:mulpay_frontend/view/screens/signin.dart';
-import 'package:mulpay_frontend/view/widgets/navbar.dart';
+import 'package:client/model/contract_model.dart';
+import 'package:client/view/screens/signin.dart';
+import 'package:client/view/widgets/navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
