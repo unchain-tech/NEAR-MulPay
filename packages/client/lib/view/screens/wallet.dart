@@ -113,7 +113,7 @@ class _WalletState extends State<Wallet> {
                         await showDialog(
                           context: context,
                           builder: (_) => QRCode(
-                              qrImage: QrImage(
+                              qrImage: QrImageView(
                             data: contractModel.account,
                             size: 200,
                           )),
