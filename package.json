@@ -1,6 +1,7 @@
 {
   "name": "NEAR-Mulpay",
   "version": "1.0.0",
+  "packageManager": "yarn@3.6.4",
   "description": "\"sample of NEAR-Mulpay\"",
   "main": "\"\"",
   "license": "UNLICENSED",
@@ -22,11 +23,9 @@
     "prettier-plugin-solidity": "^1.1.2",
     "simple-git-hooks": "^2.8.1"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged"
   },
