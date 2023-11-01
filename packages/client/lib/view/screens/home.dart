@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 // import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import 'package:client/model/contract_model.dart';
-// import 'package:client/view/widgets/coin.dart';
+import '/model/contract_model.dart';
+import '/view/widgets/coin.dart';
 // import 'package:client/view/widgets/qr_code.dart';
 
 class Home extends StatelessWidget {
@@ -200,32 +200,32 @@ class Home extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Expanded(
-                    //   child: FutureBuilder(
-                    //     future: contractModel.getTokensInfo(),
-                    //     builder: (context, snapshot) {
-                    //       if (snapshot.hasData) {
-                    //         var coinsList = contractModel.tokenList;
-                    //         return ListView.builder(
-                    //             itemCount: coinsList.length,
-                    //             itemBuilder: (context, index) {
-                    //               return Coins(
-                    //                   displayWidth,
-                    //                   displayHeight,
-                    //                   coinsList[index].imagePath,
-                    //                   coinsList[index].symbol,
-                    //                   coinsList[index].name,
-                    //                   coinsList[index].balance,
-                    //                   (coinsList[index].ethBalance),
-                    //                   isDeskTop);
-                    //             });
-                    //       } else {
-                    //         return const Center(
-                    //             child: CircularProgressIndicator.adaptive());
-                    //       }
-                    //     },
-                    //   ),
-                    // )
+                    Expanded(
+                      child: FutureBuilder(
+                        future: contractModel.getTokensInfo(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            var coinsList = contractModel.tokenList;
+                            return ListView.builder(
+                                itemCount: coinsList.length,
+                                itemBuilder: (context, index) {
+                                  return Coins(
+                                      displayWidth,
+                                      displayHeight,
+                                      coinsList[index].imagePath,
+                                      coinsList[index].symbol,
+                                      coinsList[index].name,
+                                      coinsList[index].balance,
+                                      (coinsList[index].ethBalance),
+                                      isDeskTop);
+                                });
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator.adaptive());
+                          }
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
