@@ -3,12 +3,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import '/model/contract_model.dart';
 import '/view/widgets/coin.dart';
-// import 'package:client/view/widgets/qr_code.dart';
+import '/view/widgets/qr_code.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -146,16 +146,16 @@ class Home extends StatelessWidget {
                                     ),
                                   ),
                                   GestureDetector(
-                                    // onTap: () async {
-                                    //   await showDialog(
-                                    //     context: context,
-                                    //     builder: (_) => QRCode(
-                                    //         qrImage: QrImageView(
-                                    //       data: contractModel.account,
-                                    //       size: 200,
-                                    //     )),
-                                    //   );
-                                    // },
+                                    onTap: () async {
+                                      await showDialog(
+                                        context: context,
+                                        builder: (_) => QRCode(
+                                            qrImage: QrImageView(
+                                          data: contractModel.getAccount(),
+                                          size: 200,
+                                        )),
+                                      );
+                                    },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

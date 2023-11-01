@@ -1,17 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
-// import 'package:qr_flutter/qr_flutter.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:web3dart/credentials.dart';
 
 import '/model/contract_model.dart';
-import '/view/widgets/navbar.dart';
-// import 'package:client/view/widgets/qr_code.dart';
+import '/view/widgets/qr_code.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({Key? key}) : super(key: key);
@@ -30,7 +27,6 @@ class _WalletState extends State<Wallet> {
   Widget build(BuildContext context) {
     final displayHeight = MediaQuery.of(context).size.height;
     final displayWidth = MediaQuery.of(context).size.width;
-    var provider = Provider.of<BottomNavigationBarProvider>(context);
     var contractModel = Provider.of<ContractModel>(context, listen: true);
     final isDeskTop = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
 
@@ -107,39 +103,39 @@ class _WalletState extends State<Wallet> {
                         ],
                       ),
                     ),
-                    // GestureDetector(
-                    //   onTap: () async {
-                    //     await showDialog(
-                    //       context: context,
-                    //       builder: (_) => QRCode(
-                    //           qrImage: QrImageView(
-                    //         data: contractModel.account,
-                    //         size: 200,
-                    //       )),
-                    //     );
-                    //   },
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.start,
-                    //     children: [
-                    //       SizedBox(
-                    //         height: 22,
-                    //         width: 22,
-                    //         child: SvgPicture.asset(
-                    //           'assets/pop.svg',
-                    //           color: Colors.grey,
-                    //         ),
-                    //       ),
-                    //       Text(
-                    //         ' display QR code',
-                    //         style: TextStyle(
-                    //           color: Colors.grey,
-                    //           fontSize: isDeskTop ? 24 : 12,
-                    //           fontWeight: FontWeight.w600,
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    GestureDetector(
+                      onTap: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (_) => QRCode(
+                              qrImage: QrImageView(
+                            data: contractModel.getAccount(),
+                            size: 200,
+                          )),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 22,
+                            width: 22,
+                            child: SvgPicture.asset(
+                              'assets/pop.svg',
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            ' display QR code',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: isDeskTop ? 24 : 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: displayHeight * 0.1,
                     ),
