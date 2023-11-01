@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:core';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:web3_connect/web3_connect.dart';
+import 'package:walletconnect_flutter_v2/walletconnect_flutter_v2.dart';
+import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
-import 'dart:math';
-import 'package:http/http.dart' as http;
 
 class ContractModel extends ChangeNotifier {
   List<Token> tokenList = [
@@ -61,6 +63,11 @@ class ContractModel extends ChangeNotifier {
   final SWAP_CONTRACT_ADDRESS = dotenv.env["SWAP_CONTRACT_ADDRESS"];
   final SWAP_CONTRACT_NAME = dotenv.env["SWAP_CONTRACT_NAME"];
 
+  String? _deepLinkUrl;
+  String? _account;
+  Web3App? _wcClient;
+  SessionData? _sessionData;
+
   late Web3Client auroraClient;
   int ethBalance = 0;
   bool _isLoading = true;
@@ -80,29 +87,37 @@ class ContractModel extends ChangeNotifier {
   ContractFunction? _transfer;
   ContractFunction? _balanceOf;
 
-  Web3Connect? _connection;
-  var account;
+  // Web3Connect? _connection;
+  // var account;
 
   ContractModel() {
     init();
   }
 
   Future<void> init() async {
-    final INFURA_KEY_TEST = dotenv.env["INFURA_KEY_TEST"];
-    http.Client httpClient = http.Client();
-    auroraClient = Web3Client(INFURA_KEY_TEST!, httpClient);
-    _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
-      return IOWebSocketChannel.connect(_wsUrl).cast<String>();
-    });
+    // final INFURA_KEY_TEST = dotenv.env["INFURA_KEY_TEST"];
+    // http.Client httpClient = http.Client();
+    // auroraClient = Web3Client(INFURA_KEY_TEST!, httpClient);
+    // _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
+    //   return IOWebSocketChannel.connect(_wsUrl).cast<String>();
+    // });
+
+    var httpClient = Client();
+
+    auroraClient = Web3Client(dotenv.env["INFURA_KEY_TEST"]!, httpClient);
   }
 
-  Future<void> getAbi(String contractName) async {
-    String abiStringFile =
-        await rootBundle.loadString("smartcontracts/" + contractName + ".json");
-    var jsonAbi = jsonDecode(abiStringFile);
-    _abiCode = jsonEncode(jsonAbi["abi"]);
-    _contractAddress =
-        EthereumAddress.fromHex(jsonAbi["networks"]["1313161555"]["address"]);
+  // Future<void> getAbi(String contractName) async {
+  //   String abiStringFile =
+  //       await rootBundle.loadString("smartcontracts/" + contractName + ".json");
+  //   var jsonAbi = jsonDecode(abiStringFile);
+  //   _abiCode = jsonEncode(jsonAbi["abi"]);
+  //   _contractAddress =
+  //       EthereumAddress.fromHex(jsonAbi["networks"]["1313161555"]["address"]);
+  // }
+
+  getAccount() {
+    return _account;
   }
 
   Future<DeployedContract> getContract(
@@ -130,40 +145,80 @@ class ContractModel extends ChangeNotifier {
     return result;
   }
 
-  Future<void> sendTransaction(String contractName, String contractAddress,
-      String functionName, List<dynamic> args) async {
-    if (_connection != null && _client != null) {
-      final contract = await getContract(contractName, contractAddress);
-      ContractFunction function = contract.function(functionName);
-      final transaction = Transaction.callContract(
-        contract: contract,
-        function: function,
-        from: EthereumAddress.fromHex(_connection!.account),
-        parameters: args,
-      );
-      final tra = _client!.sendTransaction(
-          _connection!.credentials, transaction,
-          chainId: 1313161555);
-      if (!await launchUrlString(_deepLink)) {
-        throw "Could not launch $_deepLink";
-      }
-      await tra;
-      notifyListeners();
-    } else {
-      print("There is no connection to wallet or no client");
-    }
+  Future<EthereumTransaction> generateTransaction(
+      String contractName,
+      String contractAddress,
+      String functionName,
+      List<dynamic> parameters) async {
+    debugPrint('===== In generateTransaction ====='); // TODO: delete
+    debugPrint('=== contractName: $contractName'); // TODO: delete
+    debugPrint('=== contractAddress: $contractAddress'); // TODO: delete
+    debugPrint('=== functionName: $functionName'); // TODO: delete
+    debugPrint('=== parameters: $parameters'); // TODO: delete
+
+    _contract = await getContract(contractName, contractAddress);
+    debugPrint('=== _contract: $_contract'); // TODO: delete
+
+    ContractFunction function = _contract!.function(functionName);
+
+    debugPrint('=== function: $function'); // TODO: delete
+
+    // web3dartを使用して、トランザクションを作成します。
+    final Transaction transaction = Transaction.callContract(
+        contract: _contract!, function: function, parameters: parameters);
+
+    debugPrint('=== transaction: $transaction'); // TODO: delete
+
+    // walletconnect_flutter_v2を使用して、Ethereumトランザクションを作成します。
+    final EthereumTransaction ethereumTransaction = EthereumTransaction(
+      from: _account!,
+      to: contractAddress,
+      value: '0x${transaction.value?.getInWei.toRadixString(16) ?? '0'}',
+      data: transaction.data != null ? bytesToHex(transaction.data!) : null,
+    );
+
+    debugPrint('=== ethereumTransaction: $ethereumTransaction'); // TODO: delete
+
+    return ethereumTransaction;
   }
 
-  Future<void> setConnection(Web3Connect connection) async {
-    _connection = connection;
-    account = connection.account;
+  Future<String> sendTransaction(EthereumTransaction transaction) async {
+    // Metamaskアプリケーションを起動します。
+    await launchUrlString(_deepLinkUrl!, mode: LaunchMode.externalApplication);
+
+    // 署名をリクエストします。
+    final String signResponse = await _wcClient?.request(
+      topic: _sessionData?.topic ?? "",
+      chainId: 'eip155:1313161555',
+      request: SessionRequestParams(
+        method: 'eth_sendTransaction',
+        params: [transaction.toJson()],
+      ),
+    );
+
+    return signResponse;
+  }
+
+  Future<void> setConnection(
+      String deepLinkUrl, Web3App wcClient, SessionData sessionData) async {
+    _deepLinkUrl = deepLinkUrl;
+    _wcClient = wcClient;
+    _sessionData = sessionData;
+    // セッションを認証したアカウントを取得します。
+    _account = NamespaceUtils.getAccount(
+        sessionData.namespaces.values.first.accounts.first);
+
+    // TODO: delete ====
+    debugPrint('=== _account: $_account'); // TODO: delete
+    // TODO: delete ====
+
     notifyListeners();
   }
 
   Future<String> getBalance(
       String tokenContractName, String tokenAddress) async {
     List<dynamic> result = await query(tokenContractName, tokenAddress,
-        'balanceOf', [EthereumAddress.fromHex(_connection!.account)]);
+        'balanceOf', [EthereumAddress.fromHex(_account!)]);
     return result[0].toString();
   }
 
@@ -194,28 +249,69 @@ class ContractModel extends ChangeNotifier {
 
   Future<void> sendToken(String sendTokenContractName, String sendTokenAddress,
       String receiveTokenAddress, String recipientAddress, int amount) async {
-    await sendTransaction(
-      sendTokenContractName,
-      sendTokenAddress,
-      "approve",
-      [
+    try {
+      // トークンの送信を承認します。
+      final EthereumTransaction ethereumTransactionOfApprove =
+          await generateTransaction(
+              sendTokenContractName, sendTokenAddress, "approve", [
         EthereumAddress.fromHex(dotenv.env['SWAP_CONTRACT_ADDRESS']!),
         BigInt.from(amount),
-      ],
-    );
-    await sendTransaction(
-      dotenv.env['SWAP_CONTRACT_NAME']!,
-      dotenv.env['SWAP_CONTRACT_ADDRESS']!,
-      "swap",
-      [
-        // measureToken is got rid of
-        EthereumAddress.fromHex(sendTokenAddress),
-        EthereumAddress.fromHex(sendTokenAddress),
-        EthereumAddress.fromHex(receiveTokenAddress),
-        BigInt.from(amount),
-        EthereumAddress.fromHex(recipientAddress),
-      ],
-    );
+      ]);
+
+      final String signResponseOfApprove =
+          await sendTransaction(ethereumTransactionOfApprove);
+      debugPrint(
+          '=== signResponseOfApprove: $signResponseOfApprove'); // TODO: delete
+
+      final EthereumTransaction ethereumTransactionOfSwap =
+          await generateTransaction(
+        dotenv.env['SWAP_CONTRACT_NAME']!,
+        dotenv.env['SWAP_CONTRACT_ADDRESS']!,
+        "swap",
+        [
+          // measureToken is got rid of
+          EthereumAddress.fromHex(sendTokenAddress),
+          EthereumAddress.fromHex(sendTokenAddress),
+          EthereumAddress.fromHex(receiveTokenAddress),
+          BigInt.from(amount),
+          EthereumAddress.fromHex(recipientAddress),
+        ],
+      );
+
+      final String signResponseOfSwap =
+          await sendTransaction(ethereumTransactionOfSwap);
+      debugPrint('=== signResponseOfSwap: $signResponseOfSwap'); // TODO: delete
+    } catch (error) {
+      debugPrint('=== error: $error'); // TODO: delete
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> distributeToken(String tokenAddress) async {
+    try {
+      debugPrint('=== tokenAddress: $tokenAddress'); // TODO: delete
+      final EthereumTransaction ethereumTransaction = await generateTransaction(
+        dotenv.env["SWAP_CONTRACT_NAME"]!,
+        dotenv.env["SWAP_CONTRACT_ADDRESS"]!,
+        "distributeToken",
+        [
+          EthereumAddress.fromHex(tokenAddress),
+          BigInt.from(100),
+          EthereumAddress.fromHex(_account!),
+        ],
+      );
+
+      debugPrint(
+          '=== ethereumTransaction: $ethereumTransaction'); // TODO: delete
+
+      final String signResponse = await sendTransaction(ethereumTransaction);
+      debugPrint('=== signResponse: $signResponse'); // TODO: delete
+    } catch (error) {
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<double> getTotalBalance() async {
@@ -253,4 +349,26 @@ class Token {
     this.balance = "0";
     this.ethBalance = "0";
   }
+}
+
+// Ethereumトランザクションを作成するためのモデルクラス
+class EthereumTransaction {
+  const EthereumTransaction({
+    required this.from,
+    required this.to,
+    required this.value,
+    this.data,
+  });
+
+  final String from;
+  final String to;
+  final String value;
+  final String? data;
+
+  Map<String, dynamic> toJson() => {
+        'from': from,
+        'to': to,
+        'value': value,
+        'data': data,
+      };
 }

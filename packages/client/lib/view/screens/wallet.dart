@@ -1,16 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:client/model/contract_model.dart';
-import 'package:client/view/widgets/qr_code.dart';
-import 'package:client/view/widgets/navbar.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:web3dart/credentials.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import '/model/contract_model.dart';
+import '/view/widgets/qr_code.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({Key? key}) : super(key: key);
@@ -24,11 +22,11 @@ class _WalletState extends State<Wallet> {
   List<Token> tokenList = ContractModel().tokenList;
   TextEditingController addressController = TextEditingController();
   final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final displayHeight = MediaQuery.of(context).size.height;
     final displayWidth = MediaQuery.of(context).size.width;
-    var provider = Provider.of<BottomNavigationBarProvider>(context);
     var contractModel = Provider.of<ContractModel>(context, listen: true);
     final isDeskTop = ResponsiveBreakpoints.of(context).largerThan(MOBILE);
 
@@ -90,7 +88,7 @@ class _WalletState extends State<Wallet> {
                           Container(
                             padding: const EdgeInsets.symmetric(vertical: 1),
                             child: Text(
-                              contractModel.account,
+                              contractModel.getAccount(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                               style: TextStyle(
@@ -111,7 +109,7 @@ class _WalletState extends State<Wallet> {
                           context: context,
                           builder: (_) => QRCode(
                               qrImage: QrImageView(
-                            data: contractModel.account,
+                            data: contractModel.getAccount(),
                             size: 200,
                           )),
                         );
@@ -303,18 +301,12 @@ class _WalletState extends State<Wallet> {
                                     width: displayWidth * 0.37,
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        await contractModel.sendTransaction(
-                                          dotenv.env["SWAP_CONTRACT_NAME"]!,
-                                          dotenv.env["SWAP_CONTRACT_ADDRESS"]!,
-                                          "distributeToken",
-                                          [
-                                            EthereumAddress.fromHex(
-                                                dropdownValue.address),
-                                            BigInt.from(100),
-                                            EthereumAddress.fromHex(
-                                                contractModel.account),
-                                          ],
-                                        );
+                                        try {
+                                          await contractModel.distributeToken(
+                                              dropdownValue.address);
+                                        } catch (error) {
+                                          debugPrint('sendToken: $error');
+                                        }
                                       },
                                       child: Text(
                                         'Get 100 ${dropdownValue.symbol}!',
