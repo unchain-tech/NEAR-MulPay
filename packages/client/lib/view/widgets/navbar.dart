@@ -1,10 +1,11 @@
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:client/view/screens/home.dart';
-import 'package:client/view/screens/send.dart';
-import 'package:client/view/screens/wallet.dart';
-import 'package:provider/provider.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:provider/provider.dart';
+
+import '/view/screens/home.dart';
+import '/view/screens/send.dart';
+import '/view/screens/wallet.dart';
 
 class BottomNavigationBarProvider with ChangeNotifier {
   int _currentIndex = 0;
