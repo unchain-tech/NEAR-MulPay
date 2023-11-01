@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:client/model/contract_model.dart';
-import 'package:client/view/widgets/qr_code.dart';
-import 'package:client/view/widgets/coin.dart';
 import 'package:provider/provider.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+// import 'package:qr_flutter/qr_flutter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import 'package:client/model/contract_model.dart';
+// import 'package:client/view/widgets/coin.dart';
+// import 'package:client/view/widgets/qr_code.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -134,7 +135,7 @@ class Home extends StatelessWidget {
                                   SizedBox(
                                     width: displayWidth * 0.2,
                                     child: Text(
-                                      contractModel.account,
+                                      contractModel.getAccount(),
                                       style: TextStyle(
                                         color: Colors.grey,
                                         fontSize: isDeskTop ? 28 : 13,
@@ -145,16 +146,16 @@ class Home extends StatelessWidget {
                                     ),
                                   ),
                                   GestureDetector(
-                                    onTap: () async {
-                                      await showDialog(
-                                        context: context,
-                                        builder: (_) => QRCode(
-                                            qrImage: QrImageView(
-                                          data: contractModel.account,
-                                          size: 200,
-                                        )),
-                                      );
-                                    },
+                                    // onTap: () async {
+                                    //   await showDialog(
+                                    //     context: context,
+                                    //     builder: (_) => QRCode(
+                                    //         qrImage: QrImageView(
+                                    //       data: contractModel.account,
+                                    //       size: 200,
+                                    //     )),
+                                    //   );
+                                    // },
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
@@ -199,32 +200,32 @@ class Home extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: FutureBuilder(
-                        future: contractModel.getTokensInfo(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            var coinsList = contractModel.tokenList;
-                            return ListView.builder(
-                                itemCount: coinsList.length,
-                                itemBuilder: (context, index) {
-                                  return Coins(
-                                      displayWidth,
-                                      displayHeight,
-                                      coinsList[index].imagePath,
-                                      coinsList[index].symbol,
-                                      coinsList[index].name,
-                                      coinsList[index].balance,
-                                      (coinsList[index].ethBalance),
-                                      isDeskTop);
-                                });
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator.adaptive());
-                          }
-                        },
-                      ),
-                    )
+                    // Expanded(
+                    //   child: FutureBuilder(
+                    //     future: contractModel.getTokensInfo(),
+                    //     builder: (context, snapshot) {
+                    //       if (snapshot.hasData) {
+                    //         var coinsList = contractModel.tokenList;
+                    //         return ListView.builder(
+                    //             itemCount: coinsList.length,
+                    //             itemBuilder: (context, index) {
+                    //               return Coins(
+                    //                   displayWidth,
+                    //                   displayHeight,
+                    //                   coinsList[index].imagePath,
+                    //                   coinsList[index].symbol,
+                    //                   coinsList[index].name,
+                    //                   coinsList[index].balance,
+                    //                   (coinsList[index].ethBalance),
+                    //                   isDeskTop);
+                    //             });
+                    //       } else {
+                    //         return const Center(
+                    //             child: CircularProgressIndicator.adaptive());
+                    //       }
+                    //     },
+                    //   ),
+                    // )
                   ],
                 ),
               ),
