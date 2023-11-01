@@ -1,7 +1,7 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "scripts":{
+  "scripts": {
     "start": "flutter run"
   }
 }
