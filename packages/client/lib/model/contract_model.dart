@@ -56,6 +56,12 @@ class ContractModel extends ChangeNotifier {
         name: "Polygon",
         symbol: "MATIC",
         imagePath: "assets/polygon-matic-logo.png"),
+    Token(
+        address: dotenv.env["DAI_CONTRACT_ADDRESS"]!,
+        contractName: dotenv.env["DAI_CONTRACT_NAME"]!,
+        name: "Dai",
+        symbol: "DAI",
+        imagePath: "assets/dai-dai-logo.png"),
   ];
 
   final SWAP_CONTRACT_ADDRESS = dotenv.env["SWAP_CONTRACT_ADDRESS"];
