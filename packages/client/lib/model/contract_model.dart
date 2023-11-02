@@ -84,7 +84,8 @@ class ContractModel extends ChangeNotifier {
   Future<void> init() async {
     var httpClient = Client();
 
-    auroraClient = Web3Client(dotenv.env["INFURA_KEY_TEST"]!, httpClient);
+    auroraClient =
+        Web3Client(dotenv.env["AURORA_TESTNET_INFURA_KEY"]!, httpClient);
   }
 
   getAccount() {

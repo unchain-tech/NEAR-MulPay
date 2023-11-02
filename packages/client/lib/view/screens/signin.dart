@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,7 @@ class SignIn extends StatelessWidget {
 
   Future<void> _initWalletConnect() async {
     _walletConnect = await Web3App.createInstance(
-      projectId: '5eb727cbee79907289c211ebe913fc54',
+      projectId: dotenv.env["WALLETCONNECT_PROJECT_ID"]!,
       metadata: const PairingMetadata(
         name: 'NEAR MulPay',
         description: 'Mobile Payment dApp with Swap Feature',
