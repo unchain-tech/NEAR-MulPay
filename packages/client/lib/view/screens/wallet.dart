@@ -305,7 +305,7 @@ class _WalletState extends State<Wallet> {
                                           await contractModel.distributeToken(
                                               dropdownValue.address);
                                         } catch (error) {
-                                          debugPrint('sendToken: $error');
+                                          debugPrint('distributeToken: $error');
                                         }
                                       },
                                       child: Text(

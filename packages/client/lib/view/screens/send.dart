@@ -526,19 +526,23 @@ class _SendState extends State<Send> {
                                 : (displayWidth * 0.7),
                             child: ElevatedButton(
                               onPressed: () async {
-                                await contractModel.sendToken(
-                                  dropdownValueOfSecond.contractName,
-                                  dropdownValueOfSecond.address,
-                                  dropdownValueOfThird.address,
-                                  addressController.text,
-                                  int.parse(amountController.text),
-                                );
-                                setState(() {
-                                  dropdownValueOfSecond = tokenList[2];
-                                });
-                                dropdownValueOfThird = tokenList[2];
-                                addressController.clear();
-                                amountController.clear();
+                                try {
+                                  await contractModel.sendToken(
+                                    dropdownValueOfSecond.contractName,
+                                    dropdownValueOfSecond.address,
+                                    dropdownValueOfThird.address,
+                                    addressController.text,
+                                    int.parse(amountController.text),
+                                  );
+                                  setState(() {
+                                    dropdownValueOfSecond = tokenList[2];
+                                  });
+                                  dropdownValueOfThird = tokenList[2];
+                                  addressController.clear();
+                                  amountController.clear();
+                                } catch (error) {
+                                  debugPrint('sendToken: $error');
+                                }
                               },
                               child: Text(
                                 'Transfer',
