@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:walletconnect_flutter_v2/walletconnect_flutter_v2.dart';
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:web_socket_channel/io.dart';
 
 class ContractModel extends ChangeNotifier {
   List<Token> tokenList = [
@@ -70,51 +68,18 @@ class ContractModel extends ChangeNotifier {
 
   late Web3Client auroraClient;
   int ethBalance = 0;
-  bool _isLoading = true;
-  final String _rpcUrl = "https://testnet.aurora.dev";
-  final String _wsUrl = "wss://testnet.aurora.dev";
-  final String _deepLink =
-      "wc:00e46b69-d0cc-4b3e-b6a2-cee442f97188@1?bridge=https%3A%2F%2Fbridge.walletconnect.org&key=91303dedf64285cbbaf9120f6e9d160a5c8aa3deb67017a3874cd272323f48ae";
 
-  Web3Client? _client;
-  String? _abiCode;
-
-  Credentials? _credentials;
-  EthereumAddress? _contractAddress;
-  EthereumAddress? _ownAddress;
   DeployedContract? _contract;
-
-  ContractFunction? _transfer;
-  ContractFunction? _balanceOf;
-
-  // Web3Connect? _connection;
-  // var account;
 
   ContractModel() {
     init();
   }
 
   Future<void> init() async {
-    // final INFURA_KEY_TEST = dotenv.env["INFURA_KEY_TEST"];
-    // http.Client httpClient = http.Client();
-    // auroraClient = Web3Client(INFURA_KEY_TEST!, httpClient);
-    // _client = Web3Client(_rpcUrl, Client(), socketConnector: () {
-    //   return IOWebSocketChannel.connect(_wsUrl).cast<String>();
-    // });
-
     var httpClient = Client();
 
     auroraClient = Web3Client(dotenv.env["INFURA_KEY_TEST"]!, httpClient);
   }
-
-  // Future<void> getAbi(String contractName) async {
-  //   String abiStringFile =
-  //       await rootBundle.loadString("smartcontracts/" + contractName + ".json");
-  //   var jsonAbi = jsonDecode(abiStringFile);
-  //   _abiCode = jsonEncode(jsonAbi["abi"]);
-  //   _contractAddress =
-  //       EthereumAddress.fromHex(jsonAbi["networks"]["1313161555"]["address"]);
-  // }
 
   getAccount() {
     return _account;
