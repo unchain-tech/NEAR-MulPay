@@ -24,7 +24,7 @@ yarn
 AURORA_PRIVATE_KEY="YOUR_PRIVATE_KEY"
 ```
 
-.envファイルを作成したら下のコマンドを実行しましょう。
+.env ファイルを作成したら下のコマンドを実行しましょう。
 
 ```
 yarn contract deploy
@@ -66,7 +66,7 @@ WALLETCONNECT_PROJECT_ID="YOUR_PROJECT_ID"
 - `YOUR_INFURA_KEY`：環境構築で作成した Infura の API Key を指定してください。
 - `YOUR_PROJECT_ID`：環境構築で作成した WalletConnect の Project ID を指定してください。
 
-.envファイルを作成したら下のコマンドを実行しましょう。flutter のパッケージをインストールします。
+.env ファイルを作成したら下のコマンドを実行しましょう。flutter のパッケージをインストールします。
 
 ```
 yarn client flutter:install
