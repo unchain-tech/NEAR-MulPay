@@ -49,7 +49,6 @@ class SignIn extends StatelessWidget {
               events: ['chainChanged']),
         },
       );
-      debugPrint('=== connectResponse: $connectResponse'); // TODO: delete
       final Uri? uri = connectResponse.uri;
       if (uri == null) {
         throw Exception('Invalid URI');
@@ -57,16 +56,12 @@ class SignIn extends StatelessWidget {
       final String encodedUri = Uri.encodeComponent('$uri');
       _url = encodedUri;
 
-      debugPrint('=== _url: $_url'); //TODO: delete
-
       // Metamaskを起動します。
       await launchUrlString(deepLinkUrl, mode: LaunchMode.externalApplication);
 
       // セッションが確立されるまで待機します。
       final Completer<SessionData> session = connectResponse.session;
-      debugPrint('=== session: $session'); // TODO: delete
       _sessionData = await session.future;
-      debugPrint('=== _sessionData: $_sessionData'); // TODO: delete
     } catch (e) {
       rethrow;
     }
@@ -149,8 +144,6 @@ class SignIn extends StatelessWidget {
                     onPressed: () async {
                       try {
                         await connectWallet();
-                        debugPrint(
-                            '=== Connected to MetaMask !!! ==='); // TODO: delete
                         await context.read<ContractModel>().setConnection(
                             deepLinkUrl, _walletConnect!, _sessionData!);
                         provider.currentIndex = 0;

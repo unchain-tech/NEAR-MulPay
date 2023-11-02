@@ -150,24 +150,13 @@ class ContractModel extends ChangeNotifier {
       String contractAddress,
       String functionName,
       List<dynamic> parameters) async {
-    debugPrint('===== In generateTransaction ====='); // TODO: delete
-    debugPrint('=== contractName: $contractName'); // TODO: delete
-    debugPrint('=== contractAddress: $contractAddress'); // TODO: delete
-    debugPrint('=== functionName: $functionName'); // TODO: delete
-    debugPrint('=== parameters: $parameters'); // TODO: delete
-
     _contract = await getContract(contractName, contractAddress);
-    debugPrint('=== _contract: $_contract'); // TODO: delete
 
     ContractFunction function = _contract!.function(functionName);
-
-    debugPrint('=== function: $function'); // TODO: delete
 
     // web3dartを使用して、トランザクションを作成します。
     final Transaction transaction = Transaction.callContract(
         contract: _contract!, function: function, parameters: parameters);
-
-    debugPrint('=== transaction: $transaction'); // TODO: delete
 
     // walletconnect_flutter_v2を使用して、Ethereumトランザクションを作成します。
     final EthereumTransaction ethereumTransaction = EthereumTransaction(
@@ -176,8 +165,6 @@ class ContractModel extends ChangeNotifier {
       value: '0x${transaction.value?.getInWei.toRadixString(16) ?? '0'}',
       data: transaction.data != null ? bytesToHex(transaction.data!) : null,
     );
-
-    debugPrint('=== ethereumTransaction: $ethereumTransaction'); // TODO: delete
 
     return ethereumTransaction;
   }
@@ -207,10 +194,6 @@ class ContractModel extends ChangeNotifier {
     // セッションを認証したアカウントを取得します。
     _account = NamespaceUtils.getAccount(
         sessionData.namespaces.values.first.accounts.first);
-
-    // TODO: delete ====
-    debugPrint('=== _account: $_account'); // TODO: delete
-    // TODO: delete ====
 
     notifyListeners();
   }
@@ -260,8 +243,7 @@ class ContractModel extends ChangeNotifier {
 
       final String signResponseOfApprove =
           await sendTransaction(ethereumTransactionOfApprove);
-      debugPrint(
-          '=== signResponseOfApprove: $signResponseOfApprove'); // TODO: delete
+      debugPrint('=== signResponseOfApprove: $signResponseOfApprove');
 
       final EthereumTransaction ethereumTransactionOfSwap =
           await generateTransaction(
@@ -280,9 +262,9 @@ class ContractModel extends ChangeNotifier {
 
       final String signResponseOfSwap =
           await sendTransaction(ethereumTransactionOfSwap);
-      debugPrint('=== signResponseOfSwap: $signResponseOfSwap'); // TODO: delete
+      debugPrint('=== signResponseOfSwap: $signResponseOfSwap');
     } catch (error) {
-      debugPrint('=== error: $error'); // TODO: delete
+      rethrow;
     } finally {
       notifyListeners();
     }
@@ -290,7 +272,6 @@ class ContractModel extends ChangeNotifier {
 
   Future<void> distributeToken(String tokenAddress) async {
     try {
-      debugPrint('=== tokenAddress: $tokenAddress'); // TODO: delete
       final EthereumTransaction ethereumTransaction = await generateTransaction(
         dotenv.env["SWAP_CONTRACT_NAME"]!,
         dotenv.env["SWAP_CONTRACT_ADDRESS"]!,
@@ -302,11 +283,8 @@ class ContractModel extends ChangeNotifier {
         ],
       );
 
-      debugPrint(
-          '=== ethereumTransaction: $ethereumTransaction'); // TODO: delete
-
       final String signResponse = await sendTransaction(ethereumTransaction);
-      debugPrint('=== signResponse: $signResponse'); // TODO: delete
+      debugPrint('=== signResponse: $signResponse');
     } catch (error) {
       rethrow;
     } finally {
