@@ -1,13 +1,17 @@
-require('dotenv').config();
-const hre = require('hardhat');
-
-const provider = hre.ethers.provider;
-const deployerWallet = new hre.ethers.Wallet(
-  process.env.AURORA_PRIVATE_KEY,
-  provider,
-);
+import 'dotenv/config';
+import hre from 'hardhat';
 
 async function main() {
+  if (process.env.AURORA_PRIVATE_KEY === undefined) {
+    throw Error('AURORA_PRIVATE_KEY is not set');
+  }
+
+  const provider = hre.ethers.provider;
+  const deployerWallet = new hre.ethers.Wallet(
+    process.env.AURORA_PRIVATE_KEY,
+    provider,
+  );
+
   console.log('Deploying contracts with the account:', deployerWallet.address);
 
   console.log(

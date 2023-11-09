@@ -1,6 +1,5 @@
+import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { ethers } from 'hardhat';
-
-const { loadFixture } = require('@nomicfoundation/hardhat-network-helpers');
 
 describe('Swap Contract', function () {
   async function deployTokenFixture() {
