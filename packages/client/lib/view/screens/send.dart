@@ -1,17 +1,15 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:mulpay_frontend/view/screens/qr_code_scan.dart';
 import 'package:provider/provider.dart';
-import '../../model/contract_model.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import '../../model/contract_model.dart';
+import '/view/screens/qr_code_scan.dart';
 
 class Send extends StatefulWidget {
   const Send({Key? key}) : super(key: key);
@@ -528,19 +526,23 @@ class _SendState extends State<Send> {
                                 : (displayWidth * 0.7),
                             child: ElevatedButton(
                               onPressed: () async {
-                                await contractModel.sendToken(
-                                  dropdownValueOfSecond.contractName,
-                                  dropdownValueOfSecond.address,
-                                  dropdownValueOfThird.address,
-                                  addressController.text,
-                                  int.parse(amountController.text),
-                                );
-                                setState(() {
-                                  dropdownValueOfSecond = tokenList[2];
-                                });
-                                dropdownValueOfThird = tokenList[2];
-                                addressController.clear();
-                                amountController.clear();
+                                try {
+                                  await contractModel.sendToken(
+                                    dropdownValueOfSecond.contractName,
+                                    dropdownValueOfSecond.address,
+                                    dropdownValueOfThird.address,
+                                    addressController.text,
+                                    int.parse(amountController.text),
+                                  );
+                                  setState(() {
+                                    dropdownValueOfSecond = tokenList[2];
+                                  });
+                                  dropdownValueOfThird = tokenList[2];
+                                  addressController.clear();
+                                  amountController.clear();
+                                } catch (error) {
+                                  debugPrint('sendToken: $error');
+                                }
                               },
                               child: Text(
                                 'Transfer',

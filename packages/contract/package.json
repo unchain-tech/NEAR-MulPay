@@ -26,8 +26,8 @@
     "@openzeppelin/contracts": "^4.8.2",
     "dotenv": "^16.0.3"
   },
-  "scripts":{
-    "deploy":"npx hardhat run scripts/deploy.ts --network testnet_aurora",
+  "scripts": {
+    "deploy": "npx hardhat run scripts/deploy.ts --network testnet_aurora",
     "test": "npx hardhat test"
   }
 }

@@ -1,3 +1,4 @@
+.yarn
 node_modules
 .openzeppelin
 .vscode
@@ -5,6 +6,7 @@ node_modules
 artifacts
 cache
 coverage*
+typechain-types
 
 gasReporterOutput.json
 package.json
