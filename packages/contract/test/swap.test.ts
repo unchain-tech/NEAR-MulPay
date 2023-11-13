@@ -1,4 +1,5 @@
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
+import { expect } from 'chai';
 import { ethers } from 'hardhat';
 
 describe('Swap Contract', function () {
@@ -43,8 +44,12 @@ describe('Swap Contract', function () {
     // check if the owner of DAI token is smart contract
     it('ERC20 token is minted from smart contract', async function () {
       const { DaiToken, SwapContract } = await loadFixture(deployTokenFixture);
+
       const balanceOfDai = await DaiToken.balanceOf(SwapContract.address);
-      console.log(balanceOfDai.toString());
+      // convert expected value `1000000 Ether` to Wei units
+      const expectedValue = ethers.utils.parseUnits('1000000', 18);
+
+      expect(balanceOfDai).to.equal(expectedValue);
     });
 
     // get the value between DAI and ETH
@@ -52,15 +57,15 @@ describe('Swap Contract', function () {
       const { DaiToken, EthToken, SwapContract } = await loadFixture(
         deployTokenFixture,
       );
+
       const value = await SwapContract.calculateValue(
         EthToken.address,
         DaiToken.address,
       );
-      console.log(
-        `value of ETH/DAI is ${
-          value / parseInt(ethers.utils.parseEther('1').toString())
-        }`,
-      );
+      // convert expected value `0.1 Ether` to Wei units
+      const expectedValue = ethers.utils.parseUnits('0.1', 18);
+
+      expect(value).to.equal(expectedValue);
     });
 
     // check swap function works
@@ -77,10 +82,9 @@ describe('Swap Contract', function () {
         ethers.utils.parseEther('100'),
         owner.address,
       );
+
       const ethAmountBefore = await DaiToken.balanceOf(addr1.address);
-      console.log(
-        `Before transfer, address_1 has ${ethAmountBefore.toString()} ETH`,
-      );
+      expect(ethAmountBefore).to.equal(0);
 
       await SwapContract.swap(
         DaiToken.address,
@@ -90,10 +94,9 @@ describe('Swap Contract', function () {
         addr1.address,
       );
 
-      const ethAmountAfter = ethers.utils.formatEther(
-        await EthToken.balanceOf(addr1.address),
-      );
-      console.log(`After transfer, address_1 has ${ethAmountAfter} ETH`);
+      const ethAmountAfter = await EthToken.balanceOf(addr1.address);
+      const expectedValue = ethers.utils.parseUnits('0.1', 18);
+      expect(ethAmountAfter).to.equal(expectedValue);
     });
   });
 });
