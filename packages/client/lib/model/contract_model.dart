@@ -21,11 +21,11 @@ class ContractModel extends ChangeNotifier {
       imagePath: "assets/aurora-aoa-logo.png",
     ),
     Token(
-        address: dotenv.env["SHIB_CONTRACT_ADDRESS"]!,
-        contractName: dotenv.env["SHIB_CONTRACT_NAME"]!,
-        name: "Shibainu",
-        symbol: "SHIB",
-        imagePath: "assets/shib-logo.png"),
+        address: dotenv.env["DAI_CONTRACT_ADDRESS"]!,
+        contractName: dotenv.env["DAI_CONTRACT_NAME"]!,
+        name: "Dai",
+        symbol: "DAI",
+        imagePath: "assets/dai-dai-logo.png"),
     Token(
         address: dotenv.env["ETH_CONTRACT_ADDRESS"]!,
         contractName: dotenv.env["ETH_CONTRACT_NAME"]!,
@@ -33,17 +33,23 @@ class ContractModel extends ChangeNotifier {
         symbol: "ETH",
         imagePath: "assets/ethereum-eth-logo.png"),
     Token(
+        address: dotenv.env["MATIC_CONTRACT_ADDRESS"]!,
+        contractName: dotenv.env["MATIC_CONTRACT_NAME"]!,
+        name: "Polygon",
+        symbol: "MATIC",
+        imagePath: "assets/polygon-matic-logo.png"),
+    Token(
+        address: dotenv.env["SHIB_CONTRACT_ADDRESS"]!,
+        contractName: dotenv.env["SHIB_CONTRACT_NAME"]!,
+        name: "Shibainu",
+        symbol: "SHIB",
+        imagePath: "assets/shib-logo.png"),
+    Token(
         address: dotenv.env["SOL_CONTRACT_ADDRESS"]!,
         contractName: dotenv.env["SOL_CONTRACT_NAME"]!,
         name: "Solana",
         symbol: "SOL",
         imagePath: "assets/solana-sol-logo.png"),
-    Token(
-        address: dotenv.env["USDT_CONTRACT_ADDRESS"]!,
-        contractName: dotenv.env["USDT_CONTRACT_NAME"]!,
-        name: "Tether",
-        symbol: "USDT",
-        imagePath: "assets/tether-usdt-logo.png"),
     Token(
         address: dotenv.env["UNI_CONTRACT_ADDRESS"]!,
         contractName: dotenv.env["UNI_CONTRACT_NAME"]!,
@@ -51,17 +57,11 @@ class ContractModel extends ChangeNotifier {
         symbol: "UNI",
         imagePath: "assets/uniswap-uni-logo.png"),
     Token(
-        address: dotenv.env["MATIC_CONTRACT_ADDRESS"]!,
-        contractName: dotenv.env["MATIC_CONTRACT_NAME"]!,
-        name: "Polygon",
-        symbol: "MATIC",
-        imagePath: "assets/polygon-matic-logo.png"),
-    Token(
-        address: dotenv.env["DAI_CONTRACT_ADDRESS"]!,
-        contractName: dotenv.env["DAI_CONTRACT_NAME"]!,
-        name: "Dai",
-        symbol: "DAI",
-        imagePath: "assets/dai-dai-logo.png"),
+        address: dotenv.env["USDT_CONTRACT_ADDRESS"]!,
+        contractName: dotenv.env["USDT_CONTRACT_NAME"]!,
+        name: "Tether",
+        symbol: "USDT",
+        imagePath: "assets/tether-usdt-logo.png"),
   ];
 
   final SWAP_CONTRACT_ADDRESS = dotenv.env["SWAP_CONTRACT_ADDRESS"];
