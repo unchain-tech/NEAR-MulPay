@@ -6,38 +6,38 @@ describe('Swap Contract', function () {
   async function deployTokenFixture() {
     const [owner, addr1] = await ethers.getSigners();
 
+    const swapFactory = await ethers.getContractFactory('SwapContract');
+    const auroraToken = await ethers.getContractFactory('AuroraToken');
     const daiToken = await ethers.getContractFactory('DaiToken');
     const ethToken = await ethers.getContractFactory('EthToken');
-    const auroraToken = await ethers.getContractFactory('AuroraToken');
+    const polygonToken = await ethers.getContractFactory('PolygonToken');
     const shibainuToken = await ethers.getContractFactory('ShibainuToken');
     const solanaToken = await ethers.getContractFactory('SolanaToken');
     const tetherToken = await ethers.getContractFactory('TetherToken');
     const uniswapToken = await ethers.getContractFactory('UniswapToken');
-    const polygonToken = await ethers.getContractFactory('PolygonToken');
-    const swapFactory = await ethers.getContractFactory('SwapContract');
 
     const SwapContract = await swapFactory.deploy();
+    const AoaToken = await auroraToken.deploy(SwapContract.address);
     const DaiToken = await daiToken.deploy(SwapContract.address);
     const EthToken = await ethToken.deploy(SwapContract.address);
-    const AoaToken = await auroraToken.deploy(SwapContract.address);
+    const MaticToken = await polygonToken.deploy(SwapContract.address);
     const ShibToken = await shibainuToken.deploy(SwapContract.address);
     const SolToken = await solanaToken.deploy(SwapContract.address);
-    const UsdtToken = await tetherToken.deploy(SwapContract.address);
     const UniToken = await uniswapToken.deploy(SwapContract.address);
-    const MaticToken = await polygonToken.deploy(SwapContract.address);
+    const UsdtToken = await tetherToken.deploy(SwapContract.address);
 
     return {
       owner,
       addr1,
+      SwapContract,
+      AoaToken,
       DaiToken,
       EthToken,
-      AoaToken,
+      MaticToken,
       ShibToken,
       SolToken,
-      UsdtToken,
       UniToken,
-      MaticToken,
-      SwapContract,
+      UsdtToken,
     };
   }
   describe('Deployment', function () {
@@ -69,7 +69,7 @@ describe('Swap Contract', function () {
     });
 
     // check swap function works
-    it('swap function', async function () {
+    it('Swap function', async function () {
       const { owner, addr1, DaiToken, EthToken, UniToken, SwapContract } =
         await loadFixture(deployTokenFixture);
 
